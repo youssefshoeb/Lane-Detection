@@ -7,7 +7,7 @@
 [image7]: ./Images/project.gif "origin video"
 [image8]: ./Images/project_result.gif "project video"
 [image9]: ./Images/challenge_result.gif "challenge video"
-
+[image10]: ./Images/equation.png "challenge video"
 # Lane Detection
 The goal of this project is to identify lane lines, vehicle position, and radius of curvature from a video stream. To do this, it is important to first define a pipeline to process still images.
 | Original Video            | Result Video                  |
@@ -82,14 +82,7 @@ Then a 2nd order polynomial line is fitted on the detected lane lines. ![ Detect
 Using the x and y pixel positions of the lane line pixels compute the radius of the curvature, and the vehicle position
 
 **Radius of Curvature Equation:**
-
-$$f(y) = y^2+By+c $$
-
-$$R\_Curve = \frac{[1+(\frac{dx}{dy})^2]^{3/2}}{|\frac{d^2x}{dy^2}|}$$
-
-$$f'(y) = \frac{dx}{dy} = 2Ay+B$$
-
-$$f''(y) = \frac{d^2x}{dy^2} = 2A$$
+![Equation ][image10]
 
 **Position of Vehicle:**
 
