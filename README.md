@@ -1,25 +1,26 @@
-# Lane Detection
-The goal of this project is to identify lane lines, vehicle position, and radius of curvature from a video stream. To do this, it is important to first define a pipeline to process still images.
-| Original Video                          | Result Video                                       |
-| --------------------------------------- | -------------------------------------------------- |
-| ![Original Video](./images/project.gif) | ![Final Result Video](./images/project_result.gif) |
-## Steps
-    1.Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
-    2. Apply distortion correction to input images.
-    3. Apply a perspective transformation to rectify input image.
-    4. Use color transforms to create a binary thresholded image. 
-    5. Identify the lane line pixels and fit polynomials to the lane boundaries.
-    6. Determine the curvature of the lane and vehicle position with respect to center.
-    7. Output visual display of the lane boundaries and estimation of lane curvature and vehicle position.
-
 [image1]: ./Images/corners.png "Corners Chessboard"
 [image2]: ./Images/undistorted.png "Undistorted Input"
 [image3]: ./Images/perspective.png "perspective image"
 [image4]: ./Images/binary.png "binary threshold images"
 [image5]: ./Images/detected_lines.png "detected lines images"
 [image6]: ./Images/output.png "output images"
+[image7]: ./Images/project.gif "origin video"
+[image8]: ./Images/project_result.gif "project video"
+[image9]: ./Images/challenge_result.gif "challenge video"
 
-
+# Lane Detection
+The goal of this project is to identify lane lines, vehicle position, and radius of curvature from a video stream. To do this, it is important to first define a pipeline to process still images.
+| Original Video            | Result Video                  |
+| ------------------------- | ----------------------------- |
+| ![Original Video][image7] | ![Final Result Video][image8] |
+## Steps
+  1. Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
+  2. Apply distortion correction to input images.
+  3. Apply a perspective transformation to rectify input image.
+  4. Use color transforms to create a binary thresholded image. 
+  5. Identify the lane line pixels and fit polynomials to the lane boundaries.
+  6. Determine the curvature of the lane and vehicle position with respect to center.
+  7. Output visual display of the lane boundaries and estimation of lane curvature and vehicle position.
 
  ## Code
  image.py contains the source code to process an image
@@ -35,11 +36,15 @@ The goal of this project is to identify lane lines, vehicle position, and radius
 ### Step 1&2: Camera Calibration and Distortion Correction
  OpenCV functions `cv2.findChessboardCorners()` and `cv2.drawChessboardCorners()` are used to identify the locations of corners on a series of pictures of a chessboard taken from different angles, and generate the 2D *imgpoint*, and the 3D *objpoints*.![Original Image, and Image with detected Corners][image1]
  Then the resulting *imgpoints* and *objpoints* are used to compute the *camera calibration* and *distortion coefficients* using the `cv2.calibrateCamera()` function. The *camera calibration* and *distortion coefficients* are then used to undistort the input image using `cv2.undistort()`.
+
  ![Original Image, and undistorted Image][image2]
+
  Notice that if you compare the two images around the edges, there are obvious differences between the original and undistorted image.
  
  ### Step 3: Perspective Transform
- This step is used to transform the undistorted image to a "birds eye view" of the road which focuses only on the lane lines and displays them in such a way that they appear to be relatively parallel to eachother. To achieve the perspective transformation the OpenCV functions `cv2.getPerspectiveTransform()` and `cv2.warpPerspective()` which take a matrix of four source points on the undistorted image and remaps them to four destination points on the warped image. The source and destination points were selected manually by visualizing the locations of the lane lines on a series of test images.![Original Image, and bird view Image][image3]
+ This step is used to transform the undistorted image to a "birds eye view" of the road which focuses only on the lane lines and displays them in such a way that they appear to be relatively parallel to eachother. To achieve the perspective transformation the OpenCV functions `cv2.getPerspectiveTransform()` and `cv2.warpPerspective()` which take a matrix of four source points on the undistorted image and remaps them to four destination points on the warped image. The source and destination points were selected manually by visualizing the locations of the lane lines on a series of test images.
+ 
+ ![Original Image, and bird view Image][image3]
 
  ### Step 4: Binary Threshold Image
  In this step convert the warped image to different color spaces and create binary thresholded images which highlight only the lane lines and ignore everything else. The following color channels and thresholds did a good job of identifying the lane lines on the test images:
@@ -47,7 +52,9 @@ The goal of this project is to identify lane lines, vehicle position, and radius
 - The L Channel from the LUV color space, with a min threshold of 195 and a max threshold of 255, did an almost perfect job of picking up the white lane lines, but completely ignored the yellow lines.
 - The B channel from the Lab color space, with a min threshold of 140 and an upper threshold of 200, did a good job in identifying the yellow lines, but completely ignored the white lines.
    
- A combined binary threshold based on the two above mentioned binary thresholds was used to create one combination thresholded image, which does a great job of highlighting almost all of the white and yellow lane lines.![ Binary threshold images][image4]
+ A combined binary threshold based on the two above mentioned binary thresholds was used to create one combination thresholded image, which does a great job of highlighting almost all of the white and yellow lane lines.
+ 
+ ![ Binary threshold images][image4]
 
  ### Step 5: Detect Lane Lines
  To detect the lane lines the following approach was applied on the binary wraped image:
@@ -105,6 +112,6 @@ The video pipeline first checks whether or not the lane was detected in the prev
 
 If at any time, the pipeline fails to detect lane pixels based on the the previous frame, it will go back in to blind search mode and scan the entire binary image for nonzero pixels to represent the lanes, using the peaks in a histogram and sliding windows approach.
 
-| Project Video                                      | Challenge Video                                   |
-| -------------------------------------------------- | ------------------------------------------------- |
-| ![Final Result Video](./images/project_result.gif) | ![Challenge Video](./images/challenge_result.gif) |
+| Project Video                 | Challenge Video            |
+| ----------------------------- | -------------------------- |
+| ![Final Result Video][image8] | ![Challenge Video][image9] |
