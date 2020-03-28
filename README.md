@@ -82,6 +82,7 @@ Then a 2nd order polynomial line is fitted on the detected lane lines. ![ Detect
 Using the x and y pixel positions of the lane line pixels compute the radius of the curvature, and the vehicle position
 
 **Radius of Curvature Equation:**
+
 ![Equation ][image10]
 
 **Position of Vehicle:**
